@@ -1,6 +1,8 @@
 #ifndef _H_LCD1602A_
 #define _H_LCD1602A_
 
+#include "type_def.h"
+
 #define CTR_PORT P6
 #define RS_BIT 2
 #define RW_BIT 1
