@@ -13,7 +13,7 @@ void WriteInsWithoutFlagCheck(uin8_t ins)
     EN(0);
 }
 
-void WriteIns(uint8_t ins)
+void lcd1602_WriteIns(uint8_t ins)
 {
     waitWhileBusy();
     WriteInsWithoutFlagCheck(ins);
@@ -28,4 +28,25 @@ uint8_t waitWhileBusy(void)
     EN(1);
     while (DATA_PORT & 0x80);
     EN(0);
+}
+
+
+
+void lcd1602_Init(void){
+    //延时40ms
+    WriteInsWithoutFlagCheck(0x38);//功能设定指令，8bit总线、两行显示、字体5*8
+    //延时37us
+    WriteInsWithoutFlagCheck(0x38);
+    //延时37us
+    lcd1602_WriteIns(0x0f);//显示开关，显示开启、光标开启、光标闪烁开启
+    //延时37us
+    lcd1602_WriteIns(0x01);//清屏，全显示空格
+    //延时1.52ms
+    lcd1602_WriteIns(0x06);//Entry mode,光标向右自增，不开启整个屏幕的位移
+    //延时37us
+    lcd1602_WriteIns(0x80);//AC内容设定，清零AC
+    //延时37us
+    lcd1602_WriteIns(0x02);//回家？？这个得研究和上一个的区别，貌似是清零AC回正光标
+    //延时1.52ms
+    
 }
