@@ -10,11 +10,12 @@
 //-----------------------------------------------------------------------------
 // 头文件包含
 //-----------------------------------------------------------------------------
-#include <c8051f020.h>                 
+#include <c8051f020.h>     
 
-//-----------------------------------------------------------------------------
-//全局变量定义
-//-----------------------------------------------------------------------------
+
+
+#define Crystal_Clock 22118400L
+
 
                                  
 unsigned long x;                 //"www.xhl.com.cn"
@@ -27,15 +28,16 @@ unsigned char xdata NCDdata[17]={0x20,0x20,0x42,0x54,0x20,0x46,0x30,0x32,0x30,0x
                                                               
 unsigned char *lcdpoint;        //指向 lcddata数组的指针
 unsigned char lcd_data_count;
-//-----------------------------------------------------------------------------
-// 函数定义
-//-----------------------------------------------------------------------------
+
 void SYSCLK_Init (void);
 void PORT_Init (void);
 void LCD_Init(void);
-//-----------------------------------------------------------------------------
-// 主程序
-//-----------------------------------------------------------------------------
+void ExtCrystalOsc_Init (void);
+void SYSCLK_Init (void);
+
+
+
+
 void main (void)
  {
 	static unsigned char data1;
@@ -83,40 +85,8 @@ void main (void)
 	}
 }
 
-//-----------------------------------------------------------------------------
-//函数名称:      SYSCLK_Init ()
-//函数功能:      系统时钟初始化
-//入口参数:      无
-//出口参数:      无
-//全局变量引用:  无
-//调用模块:      无 
-//-----------------------------------------------------------------------------
-//
 
-  void SYSCLK_Init (void)
-{
-   //int i;                              // delay counter
 
-   //OSCXCN = 0x67;                      // start external oscillator with
-                                       // 22.1184MHz crystal
-
-   //for (i=0; i < 256; i++) ;           // Wait for osc. to start up
-
-   //while (!(OSCXCN & 0x80)) ;          // Wait for crystal osc. to settle
-
-   //OSCICN = 0x88;    
-
-   OSCICN = 0x05;                          // 系统时钟初始化为片内的 24.5MHz / 8                                                           
- }
-
-//-----------------------------------------------------------------------------
-//函数名称:      PORT_Init  ()
-//函数功能:      通用I/O口及交叉开关初始化
-//入口参数:      无
-//出口参数:      无
-//全局变量引用:  无
-//调用模块:      无  
-//-----------------------------------------------------------------------------
 
 void PORT_Init (void)
 {
@@ -125,14 +95,9 @@ void PORT_Init (void)
    XBR2     = 0x40;
    P2MDOUT  = 0xe0;                       // P2口设为推挽方式
 }
-//-----------------------------------------------------------------------------
-//函数名称:      LCD_Init ()
-//函数功能:      LCD初始化
-//入口参数:      无
-//出口参数:      无
-//全局变量引用:  无
-//调用模块:      无  
-//-----------------------------------------------------------------------------
+
+
+
 void LCD_Init(void)
 {
    P2 = 0X80;
@@ -154,4 +119,74 @@ void LCD_Init(void)
    P2 = 0x00;
    P2 = 0x80; 
    for(x=0;x<5000;x++);
+}
+
+
+
+void SYSCLK_Init (void)
+{
+   OSCICN |= 0x03;                     // Configure internal oscillator for
+                                       // its highest frequency (16 MHz)
+
+   OSCICN |= 0x80;                     // Enable missing clock detector
+
+   ExtCrystalOsc_Init ();
+}
+
+
+void ExtCrystalOsc_Init (void)
+{
+
+   // Set the appropriate XFCN bits for the crystal frequency
+   //
+   //   XFCN     Crystal (XOSCMD = 11x)
+   //   000      f <= 32 kHz
+   //   001      32 kHz < f <= 84 kHz
+   //   010      84 kHz < f <= 225 kHz
+   //   011      225 kHz < f <= 590 kHz
+   //   100      590 kHz < f <= 1.5 MHz
+   //   101      1.5 MHz < f <= 4 MHz
+   //   110      4 MHz < f <= 10 MHz
+   //   111      10 MHz < f <= 30 MHz
+   #if (Crystal_Clock <= 32000)
+      #define XFCN 0
+   #elif (Crystal_Clock <= 84000L)
+      #define XFCN 1
+   #elif (Crystal_Clock <= 225000L)
+      #define XFCN 2
+   #elif (Crystal_Clock <= 590000L)
+      #define XFCN 3
+   #elif (Crystal_Clock <= 1500000L)
+      #define XFCN 4
+   #elif (Crystal_Clock <= 4000000L)
+      #define XFCN 5
+   #elif (Crystal_Clock <= 10000000L)
+      #define XFCN 6
+   #elif (Crystal_Clock <= 30000000L)
+      #define XFCN 7
+   #else
+      #error "Defined Crystal Frequency outside allowable range!"
+      #define XFCN 0
+   #endif
+
+   unsigned int i;
+
+   // Step 1. Enable the external oscillator.
+   OSCXCN = 0x60;                      // External Oscillator is an external
+                                       // crystal (no divide by 2 stage)
+
+   OSCXCN |= XFCN;
+
+
+   // Step 2. Wait at least 1 ms.
+   for (i = 9000; i > 0; i--);         // at 16 MHz, 1 ms = 16000 SYSCLKs
+                                       // DJNZ = 2 SYSCLKs
+
+
+   // Step 3. Poll for XTLVLD => �1�.
+   while ((OSCXCN & 0x80) != 0x80);
+
+
+   // Step 4. Switch the system clock to the external oscillator.
+   OSCICN |= 0x08;
 }
