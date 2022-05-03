@@ -48,5 +48,11 @@
             P6 &= ~(0x01 << EN_BIT); \
         }                            \
     } while (0)
-
+	
+	
+	
+	void WriteInsWithoutFlagCheck(uint8_t ins);
+	void lcd1602_WriteIns(uint8_t ins);
+	uint8_t waitWhileBusy(void);
+	void lcd1602_Init(void);
 #endif
