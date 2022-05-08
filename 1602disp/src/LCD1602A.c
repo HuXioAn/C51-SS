@@ -59,4 +59,17 @@ void lcd1602_Init(void){
     delay_us(1700);
 }
 
+void lcd1602_WriteData(uint8_t data_value){
+    waitWhileBusy();
+
+    RS(1);
+    RW(0);
+    EN(1);
+    DATA_PORT=data_value;
+    EN(0);
+
+}
+
+
+
 
