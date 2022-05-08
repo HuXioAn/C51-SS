@@ -1,5 +1,6 @@
 #include <c8051f020.h>     
-
+#include "delay.h"
+#include "lcd1602a.h"
 
 
 #define Crystal_Clock 22118400L
@@ -12,7 +13,7 @@
 void ExtCrystalOsc_Init (void);
 void SYSCLK_Init (void);
 
-void Lcd1602_init(void);
+//void Lcd1602_init(void);
 char isLcdBusy(void);
 void Lcd1602_Write_Command(uchar Command_Code);
 void Lcd1602_Write_Data(uchar Data);
@@ -27,7 +28,7 @@ void Delay(int time){
 	for (i = time; i > 0; i--); 
 	
 }
-
+/*
 void Lcd1602_init(void)
 {
     Lcd1602_Write_Command(0x38);  // 8bit data, two lines, 5x7 font
@@ -38,6 +39,8 @@ void Lcd1602_init(void)
     Lcd1602_Write_Command(0x80);  // set data address
     Lcd1602_Write_Command(0x02);  // clear data pointer
 }
+
+*/
 
 /* Check where LCD is busy */
 char isLcdBusy(void)
@@ -98,7 +101,25 @@ void Lcd1602_Write_String(uchar row, uchar column, uchar *dis_buffer)
 }
 
 void main(void)
-{
+{	
+	int a=0;
+	
+	WDTCN = 0xde;
+    WDTCN = 0xad; // Disable watchdog
+	SYSCLK_Init();
+	
+	//while(a<10)a++;
+	
+	
+	lcd1602_Init();
+    lcd1602_WriteIns(0x81);
+    lcd1602_WriteData(0x30);
+	
+	
+	
+	
+	
+	/*
     uchar i, j;
     WDTCN = 0xde;
     WDTCN = 0xad; // Disable watchdog
@@ -122,6 +143,9 @@ void main(void)
         for (j = 0; j < 255; j++)
             Delay(10000);
     }
+	
+	
+	*/
     while(1);
 }
 
