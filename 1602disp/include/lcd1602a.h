@@ -3,23 +3,23 @@
 
 #include "type_def.h"
 
-#define CTR_PORT P6
-#define RS_BIT 2
+#define CTR_PORT P3
+#define RS_BIT 0
 #define RW_BIT 1
-#define EN_BIT 0
+#define EN_BIT 2
 
-#define DATA_PORT P5
+#define DATA_PORT P2
 
 #define RS(x)                        \
     do                               \
     {   int a=0;                     \
         if (x)                       \
         {                            \
-            P6 |= 0x01 << RS_BIT;    \
+            CTR_PORT |= 0x01 << RS_BIT;    \
         }                            \
         else                         \
         {                            \
-            P6 &= ~(0x01 << RS_BIT); \
+            CTR_PORT &= ~(0x01 << RS_BIT); \
         } \
         while(a<10)a++;              \
     } while (0)
@@ -29,11 +29,11 @@
     {   int a=0;                             \
         if (x)                       \
         {                            \
-            P6 |= 0x01 << RW_BIT;    \
+            CTR_PORT |= 0x01 << RW_BIT;    \
         }                            \
         else                         \
         {                            \
-            P6 &= ~(0x01 << RW_BIT); \
+            CTR_PORT &= ~(0x01 << RW_BIT); \
         }\
         while(a<10)a++;                \
     } while (0)
@@ -43,12 +43,12 @@
     {   int a=0;                             \
         if (x)                       \
         {                            \
-            P6 |= 0x01 << EN_BIT;    \
+            CTR_PORT |= 0x01 << EN_BIT;    \
             while(a<10)a++;             \
         }                            \
         else                         \
         {   while(a<10)a++;                         \
-            P6 &= ~(0x01 << EN_BIT); \
+            CTR_PORT &= ~(0x01 << EN_BIT); \
         }                            \
     } while (0)
 	

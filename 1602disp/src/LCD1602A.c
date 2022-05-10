@@ -34,6 +34,7 @@ uint8_t waitWhileBusy(void)
 
 
 void lcd1602_Init(void){
+	XBR2  |= 0x40;//P0123不开只能做输入
     //延时40ms
     delay_ms(50);
     WriteInsWithoutFlagCheck(0x38);//功能设定指令，8bit总线、两行显示、字体5*8
