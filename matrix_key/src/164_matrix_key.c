@@ -23,5 +23,28 @@ void hc164_write(uint8_t data){
 
 
 int8_t matrix_key_get(void){
-    //向行写低
+    //向行全写低
+    hc164_write(0x00);
+    //查询列有无低电平
+    if((MATRIX_INPUT_PORT&0x0f) != 0x0f){
+        //有则记录列，再轮流拉高行确定行
+        uint8_t col,row;
+        uint8_t colume = MATRIX_INPUT_PORT&0x0f;
+        delay_ms(20);
+        if((MATRIX_INPUT_PORT&0x0f)!=colume)return -1;
+        //通过去抖
+        for(col=0;col<4;col++){
+            if((colume>>col)&0x01)continue;
+            for(row=0;row<5;row++){
+                hc164_write((0xff)^(0x01<<row));
+                if((MATRIX_INPUT_PORT&0x0f)=colume)return((row<<2)+col);
+
+            }
+        }
+
+    }else{
+        return -1;
+    }
+    return -1;
+    
 }
