@@ -59,4 +59,5 @@
 	uint8_t waitWhileBusy(void);
 	void lcd1602_Init(void);
     void lcd1602_WriteData(uint8_t data_value);
+	uint8_t lcd1602_printChar(char * str,uint8_t line,int8_t pos);
 #endif

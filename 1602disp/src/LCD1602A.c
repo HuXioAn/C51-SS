@@ -72,5 +72,19 @@ void lcd1602_WriteData(uint8_t data_value){
 }
 
 
+uint8_t lcd1602_printChar(char * str,uint8_t line,int8_t pos){
+    if(pos>=0 && pos<16){//设定位置
+        uint8_t ins = line == 1?0x80|pos:0xc0|pos;
+        lcd1602_WriteIns(ins);
+	    delay_us(40); 
+    }
+    while(*str){
+        lcd1602_WriteData(*str);
+		delay_us(40);
+        str++;
+    }
+}
+
+
 
 
