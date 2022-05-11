@@ -12,8 +12,9 @@
 
 
 #define MAX_DECIMAL_PLACES 6
+#define CHAR_FOR_SROOT '#'
 #define CHAR_FOR_SQUARE '^'
-#define CHAR_FOR_SQUAREROOT '#'
+
 
 
 unsigned char xdata malloc_mempool [0x1000];
@@ -109,7 +110,7 @@ void strToList(struct StackNode **root, char *notation)
         case CHAR_FOR_SQUARE:
             operator_type = OPERATOR_SQUARE;
             break;
-        case CHAR_FOR_SQUAREROOT:
+        case CHAR_FOR_SROOT:
             operator_type = OPERATOR_SQUARE_ROOT;
             break;
         default:
@@ -167,7 +168,7 @@ int main(void){
                 operator = CHAR_FOR_SQUARE;
                 break;
             case OPERATOR_SQUARE_ROOT:
-                operator = CHAR_FOR_SQUAREROOT;
+                operator = CHAR_FOR_SROOT;
                 break;
             default:
                 //表达式有误
