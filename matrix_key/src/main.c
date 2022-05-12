@@ -1,6 +1,7 @@
 #include <c8051f020.h>     
 #include "delay.h"
 #include "lcd1602a.h"
+#include "164_matrix_key.h"
 
 
 #define Crystal_Clock 22118400L
@@ -12,73 +13,42 @@ void SYSCLK_Init (void);
 
 
 
+
 void main(void)
 {	
 	int a=0;
+   char ch;
 	char *not="0.33+2*(2/5)";
 	
 	char *notation = not;
 	
 	WDTCN = 0xde;
-    WDTCN = 0xad; // Disable watchdog
+   WDTCN = 0xad; // Disable watchdog
 	SYSCLK_Init();
-	
 	lcd1602_Init();
 	
-	/*
-    lcd1602_WriteIns(0x80);
-	delay_us(40);
-    
-	
-	while(*notation){
-		lcd1602_WriteData(*notation);
-		delay_us(40);
-		notation++;
-		
-	}
-	
-	lcd1602_WriteIns(0xC0);
-	delay_us(40);
-	
-	notation=not;
-	while(*notation){
-		lcd1602_WriteData(*notation);
-		delay_us(40);
-		notation++;
-	}
-	
-	
-	delay_ms(3000);
-	
-	lcd1602_WriteIns(0x01);//清屏，全显示空格
-    //延时1.52ms
-    delay_us(1700);
-	
-	
-	notation=not;
-	while(*notation){
-		lcd1602_WriteData(*notation);
-		delay_us(40);
-		notation++;
-	}
-	*/
+
 
     
 	delay_ms(1000);
-	
-	lcd1602_printChar(not,1,0);
-	
+	lcd1602_WriteIns(0x80);
+   delay_us(40);
+	lcd1602_printChar("Ready",1,0);
+	delay_us(40);
+   lcd1602_WriteIns(0xC0);
+   delay_us(40);
 	delay_ms(1000);
-	lcd1602_printChar(not,2,3);
-	
-	delay_ms(1000);
-	lcd1602_printChar(not,1,3);
 	
 	
+	while(1){
+	ch=matrix_key_get();
+	while( ch == -1)ch=matrix_key_get();
+
+   lcd1602_WriteData(ch);
 	
+	while( ch != -1)ch=matrix_key_get();
 	
-	
-	
+	}
 	
 	
 	

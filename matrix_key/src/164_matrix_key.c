@@ -17,13 +17,13 @@ char key_value[]={'0','1','2','3','4','5','6','7','8','9','.',
                 's','\0'};
 
 
-void hc164_write(uint8_t data){
+void hc164_write(uint8_t value){
     uint8_t i=0;
     uint8_t a=0;
     for(;i<8;i++){
         hc164_clk = 0;
         while(a<10)a++;
-        hc164_b = 0x01 & (data>>i);
+        hc164_b = 0x01 & (value>>(7-i));
         while(a<10)a++;
         hc164_clk = 1;
         while(a<10)a++;
@@ -50,7 +50,7 @@ int8_t matrix_key_get(void){
             for(row=0;row<5;row++){
                 hc164_write((0xff)^(0x01<<row));
                 MATRIX_INPUT_PORT =0xff;
-                if((MATRIX_INPUT_PORT&0x0f)=colume)return((row<<2)+col);
+                if((MATRIX_INPUT_PORT&0x0f)==colume)return(key_value[(row<<2)+col]);
 
             }
         }
