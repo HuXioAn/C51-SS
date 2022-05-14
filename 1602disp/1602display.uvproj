@@ -324,7 +324,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>.\include</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -385,6 +385,16 @@
               <FileName>LCD1602A.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\LCD1602A.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\main.c</FilePath>
             </File>
           </Files>
         </Group>

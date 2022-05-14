@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>matrix_key</OutputName>
+          <OutputName>re_polish</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -173,10 +173,10 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4104</DriverSelection>
+            <DriverSelection>-1</DriverSelection>
           </Flash1>
-          <bUseTDR>0</bUseTDR>
-          <Flash2>BIN\SiC8051F.dll</Flash2>
+          <bUseTDR>1</bUseTDR>
+          <Flash2></Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -186,7 +186,7 @@
         </Utilities>
         <Target51>
           <Target51Misc>
-            <MemoryModel>0</MemoryModel>
+            <MemoryModel>2</MemoryModel>
             <RTOS>0</RTOS>
             <RomSize>2</RomSize>
             <DataHold>0</DataHold>
@@ -382,6 +382,21 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>re_polish.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\re_polish.c</FilePath>
+            </File>
+            <File>
+              <FileName>stack.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\stack.c</FilePath>
+            </File>
+            <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\delay.c</FilePath>
@@ -390,11 +405,6 @@
               <FileName>LCD1602A.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\LCD1602A.c</FilePath>
-            </File>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\main.c</FilePath>
             </File>
             <File>
               <FileName>164_matrix_key.c</FileName>

@@ -20,15 +20,12 @@ void main(void)
 	char *notation = not;
 	
 	WDTCN = 0xde;
-    WDTCN = 0xad; // Disable watchdog
+   WDTCN = 0xad; // Disable watchdog
 	SYSCLK_Init();
-	
-	//while(a<10)a++;
-	XBR2  |= 0x40;
 	
 	lcd1602_Init();
 	
-	
+	/*
     lcd1602_WriteIns(0x80);
 	delay_us(40);
     
@@ -64,9 +61,28 @@ void main(void)
 		delay_us(40);
 		notation++;
 	}
-	
+	*/
 
-    while(1);
+    
+	delay_ms(1000);
+	
+	lcd1602_printChar(not,1,0);
+	
+	delay_ms(1000);
+	lcd1602_printChar(not,2,3);
+	
+	delay_ms(1000);
+	lcd1602_printChar(not,1,3);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	while(1);
 }
 
 

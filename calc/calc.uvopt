@@ -26,7 +26,7 @@
     <ToolsetNumber>0x0</ToolsetNumber>
     <ToolsetName>MCS-51</ToolsetName>
     <TargetOption>
-      <CLK51>22118400</CLK51>
+      <CLK51>25000000</CLK51>
       <OPTTT>
         <gFlags>1</gFlags>
         <BeepAtEnd>1</BeepAtEnd>
@@ -77,19 +77,7 @@
         <tvExpOptDlg>0</tvExpOptDlg>
         <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
-      <CpuCode>3</CpuCode>
-      <Books>
-        <Book>
-          <Number>0</Number>
-          <Title>Data Sheet</Title>
-          <Path>DATASHTS\SILABS\C8051F02X.PDF</Path>
-        </Book>
-        <Book>
-          <Number>1</Number>
-          <Title>Data Short</Title>
-          <Path>DATASHTS\SILABS\C8051F020_SHORT.PDF</Path>
-        </Book>
-      </Books>
+      <CpuCode>0</CpuCode>
       <DebugOpt>
         <uSim>0</uSim>
         <uTrg>1</uTrg>
@@ -131,13 +119,8 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>DLGDCYG</Key>
-          <Name>(98=-1,-1,-1,-1,0)(3004=-1,-1,-1,-1,0)(3003=-1,-1,-1,-1,0)(3006=-1,-1,-1,-1,0)(3007=-1,-1,-1,-1,0)(3008=-1,-1,-1,-1,0)(3011=-1,-1,-1,-1,0)(3012=-1,-1,-1,-1,0)(3013=-1,-1,-1,-1,0)(3014=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(5068=-1,-1,-1,-1,0)(91=-1,-1,-1,-1,0)(92=-1,-1,-1,-1,0)(93=-1,-1,-1,-1,0)(3010=135,680,370,896,1)(3009=-1,-1,-1,-1,0)(5092=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5057=-1,-1,-1,-1,0)(5015=-1,-1,-1,-1,0)(5047=-1,-1,-1,-1,0)(5093=-1,-1,-1,-1,0)(1002=-1,-1,-1,-1,0)(5094=-1,-1,-1,-1,0)(5096=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5067=1656,588,1935,1050,0)(5095=-1,-1,-1,-1,0)</Name>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
           <Key>DLGTCYG</Key>
-          <Name>(98=-1,-1,-1,-1,0)(3004=-1,-1,-1,-1,0)(3003=-1,-1,-1,-1,0)(3006=-1,-1,-1,-1,0)(3007=1070,179,1313,298,1)(3008=1340,182,1583,301,1)(3011=-1,-1,-1,-1,0)(3012=685,499,928,618,1)(3013=-1,-1,-1,-1,0)(3014=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(5068=-1,-1,-1,-1,0)(91=814,476,1024,780,0)(92=-1,-1,-1,-1,0)(93=-1,-1,-1,-1,0)(3010=936,548,1171,764,0)(3009=-1,-1,-1,-1,0)(5092=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5057=-1,-1,-1,-1,0)(5015=-1,-1,-1,-1,0)(5047=-1,-1,-1,-1,0)(5093=-1,-1,-1,-1,0)(1002=-1,-1,-1,-1,0)(5094=-1,-1,-1,-1,0)(5096=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5067=37,473,316,848,1)(5095=-1,-1,-1,-1,0)</Name>
+          <Name>(98=-1,-1,-1,-1,0)(3004=-1,-1,-1,-1,0)(3003=-1,-1,-1,-1,0)(3006=-1,-1,-1,-1,0)(3007=-1,-1,-1,-1,0)(3008=-1,-1,-1,-1,0)(3011=-1,-1,-1,-1,0)(3012=-1,-1,-1,-1,0)(3013=-1,-1,-1,-1,0)(3014=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(5068=-1,-1,-1,-1,0)(91=-1,-1,-1,-1,0)(92=-1,-1,-1,-1,0)(93=-1,-1,-1,-1,0)(3010=-1,-1,-1,-1,0)(3009=-1,-1,-1,-1,0)(5092=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5057=-1,-1,-1,-1,0)(5015=-1,-1,-1,-1,0)(5047=-1,-1,-1,-1,0)(5093=-1,-1,-1,-1,0)(1002=-1,-1,-1,-1,0)(5094=-1,-1,-1,-1,0)(5096=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5067=-1,-1,-1,-1,0)(5095=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -149,7 +132,7 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>117</LineNumber>
+          <LineNumber>171</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -158,45 +141,81 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>STARTUP.A51</Filename>
+          <Filename>main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>115</LineNumber>
+          <LineNumber>163</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>-16768009</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>STARTUP.A51</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>src\MAIN.C</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>166</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>-16767984</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>src\MAIN.C</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>159</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>-16768018</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>src\MAIN.C</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>4</Number>
+          <Type>0</Type>
+          <LineNumber>162</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>-16768011</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>src\MAIN.C</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
       </Breakpoint>
-      <WatchWindow1>
-        <Ww>
-          <count>0</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>time_us,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>notation</ItemText>
-        </Ww>
-      </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
       <DebugFlag>
         <trace>0</trace>
-        <periodic>1</periodic>
+        <periodic>0</periodic>
         <aLwin>1</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
@@ -261,14 +280,38 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\LCD1602A.c</PathWithFileName>
-      <FilenameWithoutPath>LCD1602A.c</FilenameWithoutPath>
+      <PathWithFileName>.\src\main.c</PathWithFileName>
+      <FilenameWithoutPath>main.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>3</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\re_polish.c</PathWithFileName>
+      <FilenameWithoutPath>re_polish.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>4</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\stack.c</PathWithFileName>
+      <FilenameWithoutPath>stack.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>5</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -280,13 +323,25 @@
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
-      <FileNumber>4</FileNumber>
+      <FileNumber>6</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\main.c</PathWithFileName>
-      <FilenameWithoutPath>main.c</FilenameWithoutPath>
+      <PathWithFileName>.\src\LCD1602A.c</PathWithFileName>
+      <FilenameWithoutPath>LCD1602A.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>7</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\164_matrix_key.c</PathWithFileName>
+      <FilenameWithoutPath>164_matrix_key.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
