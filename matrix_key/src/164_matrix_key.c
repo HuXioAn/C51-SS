@@ -12,9 +12,13 @@
 sbit hc164_b = HC164_B;
 sbit hc164_clk = HC164_CLK;
 
-char key_value[]={'0','1','2','3','4','5','6','7','8','9','.',
-                '=','+','-','*','/',CHAR_FOR_SQUARE,CHAR_FOR_SROOT,
-                's','\0'};
+char key_value_short[]={'0','1','2','3','4','5','6','7','8','9','.',
+                '=','+','-','*','/','(',')',
+                '\b','\e'};
+
+char key_value_long[]={'0','1','2','3','4','5','6','7','8','9','.',
+                '=','+','-',CHAR_FOR_SQUARE,CHAR_FOR_SROOT,'l','r',
+                '\b','\e'};
 
 
 void hc164_write(uint8_t value){
@@ -31,7 +35,7 @@ void hc164_write(uint8_t value){
 }
 
 
-int8_t matrix_key_get(void){
+int8_t matrix_key_get(void){//当前按下的按键，检测到第一个即返回
     //向行全写低
     hc164_write(0x00);
     //查询列有无低电平
@@ -50,7 +54,7 @@ int8_t matrix_key_get(void){
             for(row=0;row<5;row++){
                 hc164_write((0xff)^(0x01<<row));
                 MATRIX_INPUT_PORT =0xff;
-                if((MATRIX_INPUT_PORT&0x0f)==colume)return(key_value[(row<<2)+col]);
+                if((MATRIX_INPUT_PORT&0x0f)==colume)return((row<<2)+col);
 
             }
         }
@@ -61,3 +65,34 @@ int8_t matrix_key_get(void){
     return -1;
     
 }
+
+char matrix_key_value(int8_t key,char* value_table){
+    return value_table[key];
+}
+
+
+char matrix_key_wait(void){//阻塞查询按键，应区分长按短按
+    char ch,key;
+    uint16_t time_count=0;
+    while(1){
+	ch=matrix_key_get();
+    key=ch;
+	while( ch == -1)ch=matrix_key_get();//有无按键按下检测
+
+	while( ch != -1){
+        ch=matrix_key_get();//按键抬起检测
+        time_count++;
+    }
+
+    if(time_count<TIME_OF_LONGPRESS)return matrix_key_value(key,key_value_short);
+    
+    return matrix_key_value(key,key_value_long);
+
+
+
+
+	
+	}
+}
+
+
