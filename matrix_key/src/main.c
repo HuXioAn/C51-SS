@@ -11,7 +11,7 @@
 void ExtCrystalOsc_Init (void);
 void SYSCLK_Init (void);
 
-
+char buf[DISPLAY_BUFFER_LEN];
 
 
 void main(void)
@@ -19,27 +19,17 @@ void main(void)
 	int a=0;
    char ch;
 	char *not="0.33+2*(2/5)";
-	
+	display_t disp;
 	char *notation = not;
 	
 	WDTCN = 0xde;
    WDTCN = 0xad; // Disable watchdog
 	SYSCLK_Init();
 	lcd1602_Init();
-	
+	lcd1602_dispStructInit(&disp,buf,DISPLAY_BUFFER_LEN);
 
-
-    
-	delay_ms(1000);
-	lcd1602_WriteIns(0x80);
-   delay_us(40);
-	lcd1602_printChar("Ready",1,0);
-	delay_us(40);
-   lcd1602_WriteIns(0xC0);
-   delay_us(40);
-	delay_ms(1000);
 	
-	
+	/*
 	while(1){
 	ch=matrix_key_get();
 	while( ch == -1)ch=matrix_key_get();
@@ -49,6 +39,20 @@ void main(void)
 	while( ch != -1)ch=matrix_key_get();
 	
 	}
+	
+	*/
+	
+	
+	
+	
+	while(1)
+	{
+		ch=matrix_key_wait();
+		if(1==lcd1602_dispKeyValue(ch,&disp))break;
+		
+		
+	}
+	
 	
 	
 	

@@ -3,6 +3,9 @@
 
 #include "type_def.h"
 
+#define DISPLAY_BUFFER_LEN 64
+#define LCD1602_WIDTH 16
+
 #define CTR_PORT P3
 #define RS_BIT 0
 #define RW_BIT 1
@@ -52,6 +55,16 @@
         }                            \
     } while (0)
 	
+
+    typedef struct diaplay_s{
+    //这里的指针都是加一同侧计数方式
+    char * buffer;
+    uint8_t buffer_len;
+    char * lcd_head;
+    char * cursor;//下一个字显示的位置
+    char * lcd_tail;//显示区域末尾字符的下一个
+    char * str_end;//已经填充内容的末尾字符加一
+}display_t;
 	
 	
 	void WriteInsWithoutFlagCheck(uint8_t ins);
@@ -60,4 +73,11 @@
 	void lcd1602_Init(void);
     void lcd1602_WriteData(uint8_t data_value);
 	uint8_t lcd1602_printChar(char * str,uint8_t line,int8_t pos);
+    void lcd1602_dispStructInit(display_t * disp,char * buffer,uint8_t buffer_len);
+    uint8_t lcd1602_dispKeyValue(char keyvalue, display_t * disp );
+    void lcd1602_displayFromStruct(display_t * disp);
+
+
+
+
 #endif

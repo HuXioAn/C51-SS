@@ -9,7 +9,7 @@
 
 #define MATRIX_INPUT_PORT P4
 
-#define TIME_OF_LONGPRESS 75
+#define TIME_OF_LONGPRESS 40
 
 
 void hc164_write(uint8_t value);
