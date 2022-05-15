@@ -3,6 +3,9 @@
 
 #include "type_def.h"
 
+#define DISPLAY_BUFFER_LEN 64
+#define LCD1602_WIDTH 16
+
 #define CTR_PORT P3
 #define RS_BIT 0
 #define RW_BIT 1
@@ -60,4 +63,11 @@
 	void lcd1602_Init(void);
     void lcd1602_WriteData(uint8_t data_value);
 	uint8_t lcd1602_printChar(char * str,uint8_t line,int8_t pos);
+    void lcd1602_dispStructInit(display_t * disp,char * buffer,uint8_t buffer_len);
+    uint8_t lcd1602_dispKeyValue(char keyvalue, display_t * disp );
+    void lcd1602_displayFromStruct(display_t * disp);
+
+
+
+
 #endif
