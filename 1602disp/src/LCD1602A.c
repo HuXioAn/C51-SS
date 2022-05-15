@@ -6,15 +6,7 @@
 #include "delay.h"
 #include <string.h>
 
-typedef struct diaplay_s{
-    //这里的指针都是加一同侧计数方式
-    char * buffer;
-    uint8_t buffer_len;
-    char * lcd_head;
-    char * cursor;//下一个字显示的位置
-    char * lcd_tail;//显示区域末尾字符的下一个
-    char * str_end;//已经填充内容的末尾字符加一
-}display_t;
+
 
 void WriteInsWithoutFlagCheck(uint8_t ins)
 {
@@ -182,7 +174,7 @@ uint8_t lcd1602_dispKeyValue(char keyvalue, display_t * disp ){
     }
 
     //更新显示
-
+    lcd1602_displayFromStruct(disp);
 
     return 0;
 }

@@ -55,6 +55,16 @@
         }                            \
     } while (0)
 	
+
+    typedef struct diaplay_s{
+    //这里的指针都是加一同侧计数方式
+    char * buffer;
+    uint8_t buffer_len;
+    char * lcd_head;
+    char * cursor;//下一个字显示的位置
+    char * lcd_tail;//显示区域末尾字符的下一个
+    char * str_end;//已经填充内容的末尾字符加一
+}display_t;
 	
 	
 	void WriteInsWithoutFlagCheck(uint8_t ins);
