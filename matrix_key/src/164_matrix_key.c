@@ -76,9 +76,9 @@ char matrix_key_wait(void){//阻塞查询按键，应区分长按短按
     uint16_t time_count=0;
     while(1){
 	ch=matrix_key_get();
-    key=ch;
+    
 	while( ch == -1)ch=matrix_key_get();//有无按键按下检测
-
+    key=ch;
 	while( ch != -1){
         ch=matrix_key_get();//按键抬起检测
         time_count++;
