@@ -22,7 +22,7 @@ uint8_t infixToPostfix(struct StackNode *head);
 
 float  calcPostfix(uint16_t notation_length);
 
-
+char * error_Check(void);
 
 
 
