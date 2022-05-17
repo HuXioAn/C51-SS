@@ -115,6 +115,28 @@ void lcd1602_dispStructInit(display_t * disp,char * buffer,uint8_t buffer_len){
 }
 
 
+
+void strncpy_to_self(char * dest,const char * src,size_t n){
+    //在同一段字符串内拷贝
+    //int8_t step;
+    if(dest > src){
+        //从后向前复制
+        for(;n>0;n--){
+            *(dest+n-1)=*(src+n-1);
+        }
+    }else{
+        size_t i=0;
+        for(;i<n;i++){
+            *(dest+i)=*(src+i);
+        }
+    }
+
+}
+
+
+
+
+
 uint8_t lcd1602_dispKeyValue(char keyvalue, display_t * disp ){
     //根据键值命令显示
     switch (keyvalue)
@@ -182,12 +204,12 @@ uint8_t lcd1602_dispKeyValue(char keyvalue, display_t * disp ){
         break;
     default:
         //要显示的字符
-        if(disp->cursor == (disp->buffer+disp->buffer_len-2))break;//如果已满，就无任何反应
+        if(disp->str_end == (disp->buffer+disp->buffer_len-2))break;//如果已满，就无任何反应
         if(disp->cursor == disp->str_end){
             *(disp->cursor++)=keyvalue;
             disp->str_end++;
-        }else{//在内容中删除
-            strncpy(disp->cursor+1,disp->cursor,disp->str_end-disp->cursor);
+        }else{//在内容中添加
+            strncpy_to_self(disp->cursor+1,disp->cursor,disp->str_end-disp->cursor);
             *(disp->cursor++)=keyvalue;
             disp->str_end++;
         }
@@ -234,6 +256,10 @@ void lcd1602_displayFromStruct(display_t * disp){
 
 
 }
+
+
+
+
 
 
 
