@@ -9,10 +9,12 @@
 
 #define MATRIX_INPUT_PORT P4
 
+#define TIME_OF_LONGPRESS 40
+
 
 void hc164_write(uint8_t value);
 int8_t matrix_key_get(void);
-
+char matrix_key_wait(void);
 
 
 

@@ -15,6 +15,29 @@ static float operation_multiple(float multiplier1, float multiplier2);
 static float operation_divide(float dividend, float divisor);
 static float operation_squareroot(float oprand);
 
+static uint8_t err_exist=0;
+
+char* err_code[]={
+    "/ by 0",
+    "Missing ()",
+    "Syntax err",
+    "root of neg"
+};
+
+char * error_Check(void){
+    if(err_exist == 0)return NULL;
+    else{
+        uint8_t num = err_exist;
+        err_exist=0;
+        return err_code[num-1];
+    }
+    return NULL;//无错误
+}
+
+
+
+
+
 uint8_t infixToPostfix(struct StackNode *head)
 {
     struct StackNode *node_ptr = head;
@@ -46,6 +69,7 @@ uint8_t infixToPostfix(struct StackNode *head)
                         OPERATOR_LEFT_PAREN)
                 {
                     //表达式有误
+                    err_exist=2;
                     return 0;
                 }
                 else
@@ -81,12 +105,19 @@ uint8_t infixToPostfix(struct StackNode *head)
 
     while (opeartor_stack_offset != 0)
     { //剩余的操作符出栈进入后缀栈
+        if(*(enum OPERATOR_TYPE *)operatorStack[opeartor_stack_offset - 1]->value_p ==
+                        OPERATOR_LEFT_PAREN ){
+                            err_exist=2;//缺少右括号
+                            return 0;
+                        }
         postFix[postFix_stack_offset] = operatorStack[opeartor_stack_offset - 1];
         opeartor_stack_offset--;
         postFix_stack_offset++;
     }
     return postFix_stack_offset;
 }
+
+
 
 float calcPostfix(uint16_t notation_length)
 {
@@ -110,6 +141,10 @@ float calcPostfix(uint16_t notation_length)
                 calc_stack[calc_stack_offset - 1] = operation_multiple(calc_stack[calc_stack_offset - 1], calc_stack[calc_stack_offset - 1]);
                 break;
             case OPERATOR_SQUARE_ROOT:
+                if(calc_stack[calc_stack_offset - 1]<0){
+                    err_exist=4;
+                    return 0;
+                }
                 calc_stack[calc_stack_offset - 1] = operation_squareroot(calc_stack[calc_stack_offset - 1]);
                 break;
 
@@ -131,6 +166,10 @@ float calcPostfix(uint16_t notation_length)
                         calc_stack_offset--;
                         break;
                     case OPERATOR_DIVDE:
+                        if(calc_stack[calc_stack_offset - 1] == 0){//除0错误
+                            err_exist=1;
+                            return 0;
+                        }
                         calc_stack[calc_stack_offset - 2] = operation_divide(calc_stack[calc_stack_offset - 2], calc_stack[calc_stack_offset - 1]);
                         calc_stack_offset--;
                         break;
@@ -142,6 +181,8 @@ float calcPostfix(uint16_t notation_length)
                 else
                 {
                     //运算栈内少于两个，表达式有误
+                    err_exist=3;
+                    return 0;
                 }
             }
 
@@ -158,8 +199,12 @@ float calcPostfix(uint16_t notation_length)
         return calc_stack[0];
     else
     { //错误
+        err_exist=3;
+        return 0;
     }
 }
+
+
 
 static uint8_t operator_pri(void *value_p)
 {
@@ -199,3 +244,110 @@ static float operation_squareroot(float oprand)
 {
     return sqrt(oprand);
 }
+
+
+
+struct StackNode *strToOprandNode(char *head, char *tail)
+{	uint8_t i;
+    char *ptr = head;
+    char *decimal = NULL;
+    float result = 0;
+    //小数点个数检查
+    for (; ptr <= tail; ptr++)
+    {
+        if (*ptr < '0' || *ptr > '9')
+        {
+            if (decimal){
+                err_exist=3;
+                return NULL;
+            }
+            else
+                decimal = ptr;
+        }
+    }
+    if (!decimal)
+    { //如果没有小数点则为整数
+        decimal = tail + 1;
+    }
+    else
+    {
+        //如果有小数点,约束小数位数
+        tail = (tail - decimal) > MAX_DECIMAL_PLACES ? decimal + 6 : tail;
+				
+        for (i = 0; i < tail - decimal; i++)
+        {
+            result += (*(decimal + i + 1) - '0') * pow(0.1, (i + 1));
+            
+        }
+    }
+    for (i = 0; i < decimal - head ; i++)
+    {
+        //计算整数部分
+        result += (*(head + i) - '0') * pow(10, decimal - head - 1 - i);
+    }
+
+    return newNode(DATA_TYPE_FLOAT, &result);
+}
+
+
+
+void strToList(struct StackNode **root, char *notation)
+{
+    char *ptr = notation;
+    char *head_figure = NULL;
+    char *tail_figure = NULL;
+    while (*ptr)
+    {
+		enum OPERATOR_TYPE operator_type;
+        if (*ptr >= '0' && *ptr <= '9')
+        {
+            //是数字,生成运算数节点
+            head_figure = ptr;
+            while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
+            {
+                ptr++; //找到下一个运算符
+                if (!*ptr)
+                    break;
+            }
+            tail_figure = ptr - 1;
+            push(root, strToOprandNode(head_figure, tail_figure));
+            continue;
+        }
+        
+        switch (*ptr)
+        {
+        case '+':
+            operator_type = OPERATOR_PLUS;
+            break;
+        case '-':
+            operator_type = OPERATOR_MINUS;
+            break;
+        case '*':
+            operator_type = OPERATOR_MULTI;
+            break;
+        case '/':
+            operator_type = OPERATOR_DIVDE;
+            break;
+        case '(':
+            operator_type = OPERATOR_LEFT_PAREN;
+            break;
+        case ')':
+            operator_type = OPERATOR_RIGHT_PAREN;
+            break;
+        case CHAR_FOR_SQUARE:
+            operator_type = OPERATOR_SQUARE;
+            break;
+        case CHAR_FOR_SROOT:
+            operator_type = OPERATOR_SQUARE_ROOT;
+            break;
+        default:
+            //表达式有误
+            err_exist=3;
+            break;
+        }
+        //生成操作符节点并挂载
+        push(root, newNode(DATA_TYPE_OPERATOR, &operator_type));
+        ptr++;
+    }
+}
+

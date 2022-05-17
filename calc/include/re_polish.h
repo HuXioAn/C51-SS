@@ -4,6 +4,9 @@
 #include "stack.h"
 
 #define STACK_SIZE_MAX 128
+#define MAX_DECIMAL_PLACES 6
+#define CHAR_FOR_SROOT '#'
+#define CHAR_FOR_SQUARE '^'
 
 enum OPERATOR_TYPE{
     //优先级除了括号之外由低到高
@@ -22,9 +25,9 @@ uint8_t infixToPostfix(struct StackNode *head);
 
 float  calcPostfix(uint16_t notation_length);
 
+char * error_Check(void);
 
-
-
+void strToList(struct StackNode **root, char *notation);
 
 
 
