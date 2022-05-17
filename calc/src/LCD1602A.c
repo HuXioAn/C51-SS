@@ -183,8 +183,14 @@ uint8_t lcd1602_dispKeyValue(char keyvalue, display_t * disp ){
     default:
         //要显示的字符
         if(disp->cursor == (disp->buffer+disp->buffer_len-2))break;//如果已满，就无任何反应
-        *(disp->cursor++)=keyvalue;
-        disp->str_end++;
+        if(disp->cursor == disp->str_end){
+            *(disp->cursor++)=keyvalue;
+            disp->str_end++;
+        }else{//在内容中删除
+            strncpy(disp->cursor+1,disp->cursor,disp->str_end-disp->cursor);
+            *(disp->cursor++)=keyvalue;
+            disp->str_end++;
+        }
         if(disp->cursor == disp->lcd_tail){//如果到右边了，显示区域位移
             disp->lcd_head++;
             disp->lcd_tail++;
