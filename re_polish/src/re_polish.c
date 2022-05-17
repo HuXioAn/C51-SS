@@ -244,3 +244,110 @@ static float operation_squareroot(float oprand)
 {
     return sqrt(oprand);
 }
+
+
+
+struct StackNode *strToOprandNode(char *head, char *tail)
+{	uint8_t i;
+    char *ptr = head;
+    char *decimal = NULL;
+    float result = 0;
+    //小数点个数检查
+    for (; ptr <= tail; ptr++)
+    {
+        if (*ptr < '0' || *ptr > '9')
+        {
+            if (decimal){
+                err_exist=3;
+                return NULL;
+            }
+            else
+                decimal = ptr;
+        }
+    }
+    if (!decimal)
+    { //如果没有小数点则为整数
+        decimal = tail + 1;
+    }
+    else
+    {
+        //如果有小数点,约束小数位数
+        tail = (tail - decimal) > MAX_DECIMAL_PLACES ? decimal + 6 : tail;
+				
+        for (i = 0; i < tail - decimal; i++)
+        {
+            result += (*(decimal + i + 1) - '0') * pow(0.1, (i + 1));
+            
+        }
+    }
+    for (i = 0; i < decimal - head ; i++)
+    {
+        //计算整数部分
+        result += (*(head + i) - '0') * pow(10, decimal - head - 1 - i);
+    }
+
+    return newNode(DATA_TYPE_FLOAT, &result);
+}
+
+
+
+void strToList(struct StackNode **root, char *notation)
+{
+    char *ptr = notation;
+    char *head_figure = NULL;
+    char *tail_figure = NULL;
+    while (*ptr)
+    {
+		enum OPERATOR_TYPE operator_type;
+        if (*ptr >= '0' && *ptr <= '9')
+        {
+            //是数字,生成运算数节点
+            head_figure = ptr;
+            while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
+            {
+                ptr++; //找到下一个运算符
+                if (!*ptr)
+                    break;
+            }
+            tail_figure = ptr - 1;
+            push(root, strToOprandNode(head_figure, tail_figure));
+            continue;
+        }
+        
+        switch (*ptr)
+        {
+        case '+':
+            operator_type = OPERATOR_PLUS;
+            break;
+        case '-':
+            operator_type = OPERATOR_MINUS;
+            break;
+        case '*':
+            operator_type = OPERATOR_MULTI;
+            break;
+        case '/':
+            operator_type = OPERATOR_DIVDE;
+            break;
+        case '(':
+            operator_type = OPERATOR_LEFT_PAREN;
+            break;
+        case ')':
+            operator_type = OPERATOR_RIGHT_PAREN;
+            break;
+        case CHAR_FOR_SQUARE:
+            operator_type = OPERATOR_SQUARE;
+            break;
+        case CHAR_FOR_SROOT:
+            operator_type = OPERATOR_SQUARE_ROOT;
+            break;
+        default:
+            //表达式有误
+            err_exist=3;
+            break;
+        }
+        //生成操作符节点并挂载
+        push(root, newNode(DATA_TYPE_OPERATOR, &operator_type));
+        ptr++;
+    }
+}
+
