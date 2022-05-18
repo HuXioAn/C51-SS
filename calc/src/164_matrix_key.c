@@ -74,25 +74,40 @@ char matrix_key_value(int8_t key,char* value_table){
 char matrix_key_wait(void){//阻塞查询按键，应区分长按短按
     char ch,key;
     uint16_t time_count=0;
+    static char continue_press=-1;
+    
     while(1){
+
 	ch=matrix_key_get();
     
-	while( ch == -1)ch=matrix_key_get();//有无按键按下检测
+	while( ch == -1 ){
+        ch=matrix_key_get();//有无按键按下检测
+        continue_press=-1;
+    }
     key=ch;
 	while( ch != -1){
         ch=matrix_key_get();//按键抬起检测
         time_count++;
+        if(ch == continue_press && time_count == TIME_OF_CONTINUEPRESS){
+            return matrix_key_value(key,key_value_long);
+        }
+        if(time_count>TIME_OF_LONGPRESS && continue_press == -1 && (key == 17 || key ==16)){
+            //初次连按设定连按变量
+            continue_press=key;
+            return matrix_key_value(key,key_value_long);
+        }
+        
+    }
+    
+    if(time_count<TIME_OF_LONGPRESS && continue_press==-1)return matrix_key_value(key,key_value_short);
+    if(continue_press==-1)return matrix_key_value(key,key_value_long);
+    
+    continue_press=-1;
+
     }
 
-    if(time_count<TIME_OF_LONGPRESS)return matrix_key_value(key,key_value_short);
-    
-    return matrix_key_value(key,key_value_long);
-
-
-
-
 	
-	}
+	
 }
 
 

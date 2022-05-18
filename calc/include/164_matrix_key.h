@@ -11,6 +11,7 @@
 
 #define TIME_OF_LONGPRESS 40
 
+#define TIME_OF_CONTINUEPRESS 20
 
 void hc164_write(uint8_t value);
 int8_t matrix_key_get(void);

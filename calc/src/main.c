@@ -11,34 +11,31 @@
 
 #define Crystal_Clock 22118400L
 
+void init_all(void);
+
+
 unsigned char xdata malloc_mempool [1000];
-
-
-
-void ExtCrystalOsc_Init (void);
-void SYSCLK_Init (void);
 
 char xdata not[DISPLAY_BUFFER_LEN];
 
 
 void main(void)
 {  
-   int l,i;
+   int l;
    char ch;
 	display_t disp;
    
 	float ans=0;
    struct StackNode *root = NULL;
 	
-	WDTCN = 0xde;
-	WDTCN = 0xad; // Disable watchdog
-	init_mempool (&malloc_mempool, sizeof(malloc_mempool));
-	SYSCLK_Init();
-	lcd1602_Init();
+	init_all();
+
+
 	lcd1602_dispStructInit(&disp,not,DISPLAY_BUFFER_LEN);
 
-	
-	while(1)
+   while(1){
+
+   while(1)
 	{
 		ch=matrix_key_wait();
 		if(1==lcd1602_dispKeyValue(ch,&disp))break;//跳出后开始计算
@@ -58,23 +55,33 @@ void main(void)
 	while(1)
 	{
 		ch=matrix_key_wait();
-		if(1==lcd1602_dispKeyValue(ch,&disp))break;//跳出后开始计算
+		if(ch == '\e'){
+         lcd1602_dispStructInit(&disp,not,DISPLAY_BUFFER_LEN);
+         deleteStack(&root);
+         lcd1602_WriteIns(0x01);//清屏，全显示空格
+         //延时1.52ms
+         delay_us(1700);
+         break;
+      }else{
+         deleteStack(&root);
+         lcd1602_WriteIns(0x01);//清屏，全显示空格
+         //延时1.52ms
+         delay_us(1700);
+         lcd1602_dispKeyValue(ch,&disp);
+         break;
+      }
+
 	}
+
+
+   }
 	
-	while(1);
+	
 }
 
 
 
-void SYSCLK_Init (void)
-{
-   OSCICN |= 0x03;                     // Configure internal oscillator for
-                                       // its highest frequency (16 MHz)
 
-   OSCICN |= 0x80;                     // Enable missing clock detector
-
-   ExtCrystalOsc_Init ();
-}
 
 
 void ExtCrystalOsc_Init (void)
@@ -132,4 +139,23 @@ void ExtCrystalOsc_Init (void)
 
    // Step 4. Switch the system clock to the external oscillator.
    OSCICN |= 0x08;
+}
+
+void SYSCLK_Init (void)
+{
+   OSCICN |= 0x03;                     // Configure internal oscillator for
+                                       // its highest frequency (16 MHz)
+
+   OSCICN |= 0x80;                     // Enable missing clock detector
+
+   ExtCrystalOsc_Init ();
+}
+
+
+void init_all(void){
+   WDTCN = 0xde;
+	WDTCN = 0xad; // Disable watchdog
+	init_mempool (&malloc_mempool, sizeof(malloc_mempool));
+	SYSCLK_Init();
+	lcd1602_Init();
 }
