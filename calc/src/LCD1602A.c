@@ -283,7 +283,8 @@ void lcd1602_printAnswer(float ans){
 		}
 
 	}
-   lcd1602_printChar(answer,2,0); 
+    if(strlen(answer)<17)lcd1602_printChar(answer,2,16-strlen(answer)); 
+    else lcd1602_printChar(answer,2,0);
 }
 
 
