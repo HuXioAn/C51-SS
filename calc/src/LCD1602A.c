@@ -5,6 +5,8 @@
 #include "type_def.h"
 #include "delay.h"
 #include <string.h>
+#include <stdio.h>
+#include "re_polish.h"
 
 
 
@@ -255,6 +257,33 @@ void lcd1602_displayFromStruct(display_t * disp){
 
 
 
+}
+
+void lcd1602_printError(void){
+    char * err_code;
+    if(err_code=error_Check()){
+        lcd1602_printChar(err_code,2,0);  
+        while(1);
+    }
+}
+
+void lcd1602_printAnswer(float ans){
+    char  answer[20],*decimal;
+	uint8_t i;
+    sprintf(answer,"%f",ans);
+	for(i=0;i<strlen(answer);i++){
+		
+		if(*(answer+i)!= '.')continue;
+		decimal=answer+i;//记录小数点
+		*decimal='\0';
+		i++;
+		if(*(answer+i)!= '0'){
+			*(decimal)='.';
+			break;
+		}
+
+	}
+   lcd1602_printChar(answer,2,0); 
 }
 
 

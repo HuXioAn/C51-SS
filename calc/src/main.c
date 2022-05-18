@@ -6,6 +6,7 @@
 #include "stdio.h"
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 #define Crystal_Clock 22118400L
@@ -25,9 +26,8 @@ void main(void)
    int l,i;
    char ch;
 	display_t disp;
-   char * err_code;
+   
 	float ans=0;
-   char answer[20];
    struct StackNode *root = NULL;
 	
 	WDTCN = 0xde;
@@ -45,25 +45,15 @@ void main(void)
 	}
    
    strToList(&root, disp.buffer);
-    if(err_code=error_Check()){
-      lcd1602_printChar(err_code,2,0);  
-      while(1);
-    }
+   lcd1602_printError();
     
-    l=infixToPostfix(root->previous);
-    if(err_code=error_Check()){
-        lcd1602_printChar(err_code,2,0);  
-        while(1);
-    }
+   l=infixToPostfix(root->previous);
+   lcd1602_printError();
 
 	ans = calcPostfix(l);
-	if(err_code=error_Check()){
-        lcd1602_printChar(err_code,2,0);  
-        while(1);
-    }
+	lcd1602_printError();
 
-   sprintf(answer,"%.4f",ans);
-   lcd1602_printChar(answer,2,0); 
+	lcd1602_printAnswer(ans);
 
 	while(1)
 	{

@@ -76,7 +76,8 @@
     void lcd1602_dispStructInit(display_t * disp,char * buffer,uint8_t buffer_len);
     uint8_t lcd1602_dispKeyValue(char keyvalue, display_t * disp );
     void lcd1602_displayFromStruct(display_t * disp);
-
+    void lcd1602_printError(void);
+    void lcd1602_printAnswer(float ans);
 
 
 
