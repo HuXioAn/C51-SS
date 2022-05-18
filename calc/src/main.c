@@ -33,6 +33,8 @@ void main(void)
 	
 
 	lcd1602_dispStructInit(&disp,not,DISPLAY_BUFFER_LEN);
+	
+	P4 &= 0xDF;
 
    while(1){
 
@@ -60,6 +62,7 @@ void main(void)
 	while(1)
 	{
 		ch=matrix_key_wait();
+      P4 |= 0x10;
 		if(ch == '\e'){
          lcd1602_dispStructInit(&disp,not,DISPLAY_BUFFER_LEN);
          deleteStack(&root);
@@ -160,10 +163,10 @@ void SYSCLK_Init (void)
 void init_all(void){
    WDTCN = 0xde;
 	WDTCN = 0xad; // Disable watchdog
-	P3MDOUT |= 0x20;//BEEP
-	BEEP = 0;
-   P74OUT |= 0X02;//LEDS
 	init_mempool (&malloc_mempool, sizeof(malloc_mempool));
 	SYSCLK_Init();
 	lcd1602_Init();
+	P3MDOUT |= 0x20;//BEEP
+	BEEP = 0;
+   P74OUT |= 0x02;//LEDS
 }

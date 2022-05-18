@@ -265,6 +265,7 @@ uint8_t lcd1602_printError(void){
     char * err_code;
     if(err_code=error_Check()){
         BEEP=1;
+        P4 &= 0xEF;
         lcd1602_printChar(err_code,2,0);
         delay_ms(200);
         BEEP=0;
