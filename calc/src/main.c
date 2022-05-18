@@ -13,6 +13,7 @@
 
 void init_all(void);
 
+sbit BEEP = P3^5;
 
 unsigned char xdata malloc_mempool [1000];
 
@@ -28,8 +29,8 @@ void main(void)
 	float ans=0;
    struct StackNode *root = NULL;
 	
-	init_all();
-
+	init_all(); 
+	
 
 	lcd1602_dispStructInit(&disp,not,DISPLAY_BUFFER_LEN);
 
@@ -41,16 +42,20 @@ void main(void)
 		if(1==lcd1602_dispKeyValue(ch,&disp))break;//跳出后开始计算
 	}
    
-   strToList(&root, disp.buffer);
-   lcd1602_printError();
-    
-   l=infixToPostfix(root->previous);
-   lcd1602_printError();
+   do{
 
-	ans = calcPostfix(l);
-	lcd1602_printError();
+      strToList(&root, disp.buffer);
+      if(lcd1602_printError())break;
+      
+      l=infixToPostfix(root->previous);
+      if(lcd1602_printError())break;
 
-	lcd1602_printAnswer(ans);
+      ans = calcPostfix(l);
+      if(lcd1602_printError())break;
+
+      lcd1602_printAnswer(ans);
+
+   }while(0);
 
 	while(1)
 	{
@@ -155,6 +160,9 @@ void SYSCLK_Init (void)
 void init_all(void){
    WDTCN = 0xde;
 	WDTCN = 0xad; // Disable watchdog
+	P3MDOUT |= 0x20;//BEEP
+	BEEP = 0;
+   P74OUT |= 0X02;//LEDS
 	init_mempool (&malloc_mempool, sizeof(malloc_mempool));
 	SYSCLK_Init();
 	lcd1602_Init();

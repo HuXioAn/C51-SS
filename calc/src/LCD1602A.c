@@ -9,6 +9,8 @@
 #include "re_polish.h"
 
 
+sbit BEEP = P3^5;
+
 
 void WriteInsWithoutFlagCheck(uint8_t ins)
 {
@@ -259,12 +261,16 @@ void lcd1602_displayFromStruct(display_t * disp){
 
 }
 
-void lcd1602_printError(void){
+uint8_t lcd1602_printError(void){
     char * err_code;
     if(err_code=error_Check()){
-        lcd1602_printChar(err_code,2,0);  
-        while(1);
+        BEEP=1;
+        lcd1602_printChar(err_code,2,0);
+        delay_ms(200);
+        BEEP=0;
+        return 1;
     }
+    return 0;
 }
 
 void lcd1602_printAnswer(float ans){
