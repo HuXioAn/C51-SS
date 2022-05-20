@@ -41,7 +41,10 @@ void main(void)
    while(1)
 	{
 		ch=matrix_key_wait();
-		if(1==lcd1602_dispKeyValue(ch,&disp))break;//跳出后开始计算
+		if(1==lcd1602_dispKeyValue(ch,&disp)){
+			if(*(disp.buffer))
+			break;//跳出后开始计算
+		}
 	}
    
    do{
@@ -49,6 +52,7 @@ void main(void)
       strToList(&root, disp.buffer);
       if(lcd1602_printError())break;
       
+	  
       l=infixToPostfix(root->previous);
       if(lcd1602_printError())break;
 
