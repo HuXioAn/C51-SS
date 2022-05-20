@@ -291,7 +291,11 @@ void lcd1602_printAnswer(float ans){
 
 	}
     if(strlen(answer)<17)lcd1602_printChar(answer,2,16-strlen(answer)); 
-    else lcd1602_printChar(answer,2,0);
+    else{
+        lcd1602_printChar(answer+16,2,0);
+        *(answer+16)='\0';
+        lcd1602_printChar(answer,1,0);
+    }
 }
 
 
