@@ -79,6 +79,26 @@ uint8_t infixToPostfix(struct StackNode *head)
                 }
 
                 break;
+            case OPERATOR_MINUS:
+                if((node_ptr == head) && (node_ptr->previous->data_type == DATA_TYPE_FLOAT)){
+                    //如果是开头的负号，后面跟着数
+                    //跳过负号节点、操作数节点取负
+                    float * previous_oprand_p = (float *)node_ptr->previous->value_p;
+                    node_ptr=node_ptr->previous;
+                    *previous_oprand_p = 0-(*previous_oprand_p);
+                    break;
+                }else if((node_ptr != head) && (node_ptr->previous->data_type == DATA_TYPE_FLOAT) && (node_ptr->next->data_type == DATA_TYPE_OPERATOR)){
+                    enum OPERATOR_TYPE previous_opr = *(enum OPERATOR_TYPE *)(node_ptr->next->value_p);
+                    if((previous_opr != CHAR_FOR_SROOT) && (previous_opr != CHAR_FOR_SQUARE)){
+                        //在中间做负号
+                        //删除负号节点、操作数节点取负
+                        float * previous_oprand_p = (float *)node_ptr->previous->value_p;
+                        node_ptr=node_ptr->previous;
+                        *previous_oprand_p = 0-(*previous_oprand_p);
+                        break;
+                    }
+                }
+                
             default:
                 //其他运算符,比较与符号栈中的优先级
                 while (opeartor_stack_offset != 0 &&
@@ -94,7 +114,7 @@ uint8_t infixToPostfix(struct StackNode *head)
                 break;
             }
         }
-        else
+        if(node_ptr->data_type == DATA_TYPE_FLOAT)
         {
             //操作数
             postFix[postFix_stack_offset] = node_ptr;

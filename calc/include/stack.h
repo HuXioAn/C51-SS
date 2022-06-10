@@ -36,7 +36,7 @@ void deleteNode(struct StackNode* node);
 
 void deleteStack(struct StackNode** root);
 
-
+void removeNode(struct StackNode* node);
 
 
 
