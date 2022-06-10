@@ -17,6 +17,7 @@ static float operation_squareroot(float oprand);
 
 static uint8_t err_exist=0;
 
+
 char* err_code[]={
     "/ by 0",
     "Missing ()",
@@ -268,6 +269,13 @@ struct StackNode *strToOprandNode(char *head, char *tail)
     if (!decimal)
     { //如果没有小数点则为整数
         decimal = tail + 1;
+        for (i = 0; i < decimal - head ; i++)
+        {
+            //计算整数部分
+            result += (*(head + i) - '0') * pow(10, decimal - head - 1 - i);
+        }
+        if((ceil(result)-result) < 0.5)result=ceil(result);
+
     }
     else
     {
@@ -279,12 +287,14 @@ struct StackNode *strToOprandNode(char *head, char *tail)
             result += (*(decimal + i + 1) - '0') * pow(0.1, (i + 1));
             
         }
+
+        for (i = 0; i < decimal - head ; i++)
+        {
+            //计算整数部分
+            result += (*(head + i) - '0') * pow(10, decimal - head - 1 - i);
+        }
     }
-    for (i = 0; i < decimal - head ; i++)
-    {
-        //计算整数部分
-        result += (*(head + i) - '0') * pow(10, decimal - head - 1 - i);
-    }
+    
 
     return newNode(DATA_TYPE_FLOAT, &result);
 }
